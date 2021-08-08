@@ -15,7 +15,7 @@ public final class BilicraftDanmaku extends JavaPlugin {
         // Plugin startup logic
         BilicraftDanmaku.logger = getLogger();
         BilicraftDanmaku.Instance = this;
-        DammakuListener listener = new DammakuListener();
+        DanmakuListener listener = new DanmakuListener();
         Bukkit.getPluginManager().registerEvents(listener,this);
         Bukkit.getMessenger().registerIncomingPluginChannel(this, "bilicraftclientui:bilicraftdanmaku" , listener);
         Bukkit.getMessenger().registerOutgoingPluginChannel(this,"bilicraftclientui:bilicraftdanmaku" );

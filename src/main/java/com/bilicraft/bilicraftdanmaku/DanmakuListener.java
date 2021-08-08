@@ -10,7 +10,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerRegisterChannelEvent;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 
-public class DammakuListener implements Listener, PluginMessageListener {
+public class DanmakuListener implements Listener, PluginMessageListener {
 
     @EventHandler
     public void channelHandler(PlayerRegisterChannelEvent event){
