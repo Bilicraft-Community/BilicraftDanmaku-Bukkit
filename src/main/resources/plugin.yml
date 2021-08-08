@@ -1,0 +1,15 @@
+name: BilicraftDanmaku
+version: ${project.version}
+main: com.bilicraft.bilicraftdanmaku.BilicraftDanmaku
+api-version: 1.17
+authors: [ ntrwansui ]
+description: Plugin-side support for BilicraftComments Mod
+permissions:
+  bilicraftdanmaku.*:
+    description: Gives access to all bilicraftdanmaku commands
+    default: op
+    children:
+      bilicraftdanmaku.denied: false
+  bilicraftdanmaku.denied:
+    description: Denied this user's danmaku
+    default: not op
