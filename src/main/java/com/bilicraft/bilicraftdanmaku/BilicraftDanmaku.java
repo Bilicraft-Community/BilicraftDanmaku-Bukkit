@@ -19,7 +19,7 @@ public final class BilicraftDanmaku extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(listener,this);
         Bukkit.getMessenger().registerIncomingPluginChannel(this, "bilicraftclientui:bilicraftdanmaku" , listener);
         Bukkit.getMessenger().registerOutgoingPluginChannel(this,"bilicraftclientui:bilicraftdanmaku" );
-        logger.info(pluginName + "is loaded, Hello, world!");
+        logger.info(pluginName + "is loaded, Hello world!");
     }
 
     @Override
