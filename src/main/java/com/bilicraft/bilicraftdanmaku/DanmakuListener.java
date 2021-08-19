@@ -1,6 +1,7 @@
 package com.bilicraft.bilicraftdanmaku;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.bukkit.Bukkit;
@@ -28,9 +29,11 @@ public class DanmakuListener implements Listener, PluginMessageListener {
             return;
         }
         String bukkitMessageString = new String(message, StandardCharsets.UTF_8);
+        BilicraftDanmaku.logger.info(bukkitMessageString);
         if(bukkitMessageString.indexOf("{") > 0 ){
             bukkitMessageString = bukkitMessageString.substring(bukkitMessageString.indexOf("{"));
         }
+        BilicraftDanmaku.logger.info(bukkitMessageString);
         JsonObject bukkitMessageObject = new JsonParser().parse(bukkitMessageString).getAsJsonObject();
         String danmakuString = bukkitMessageObject.get("text").getAsJsonPrimitive().getAsString();
         JsonObject danmakuJson = new JsonParser().parse(danmakuString).getAsJsonObject();
@@ -67,12 +70,14 @@ public class DanmakuListener implements Listener, PluginMessageListener {
             }
         }
 
-        String danmakuContent = new Gson().fromJson(danmakuJson.get("text").getAsString(),DanmakuText.class).getCheckableText();;
+        JsonObject danmakuContentObject = new JsonParser().parse(danmakuJson.get("text").getAsString()).getAsJsonObject();;
+
+        String danmakuContent = DanmakuText.getCheckableText(danmakuContentObject);
 
         AsyncPlayerChatEvent event = new AsyncPlayerChatEvent(false, player,danmakuContent, new HashSet<>(Bukkit.getOnlinePlayers()));
         Bukkit.getServer().getPluginManager().callEvent(event);
 
-        if(!event.getMessage().equals(danmakuContent)){
+        if(event.getMessage().equals(danmakuContent)){
             danmakuJson.addProperty("showName", ServerConfigs.showSenderNameOnComment);
             danmakuJson.addProperty("sender",player.getDisplayName());
             byte[] finalMessage = danmakuJson.toString().getBytes();
