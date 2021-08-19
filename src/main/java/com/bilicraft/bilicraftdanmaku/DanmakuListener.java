@@ -67,17 +67,19 @@ public class DanmakuListener implements Listener, PluginMessageListener {
             }
         }
 
-        String danmakuContent = danmakuJson.get("text").getAsString();
+        String danmakuContent = new Gson().fromJson(danmakuJson.get("text").getAsString(),DanmakuText.class).getCheckableText();;
 
         AsyncPlayerChatEvent event = new AsyncPlayerChatEvent(false, player,danmakuContent, new HashSet<>(Bukkit.getOnlinePlayers()));
         Bukkit.getServer().getPluginManager().callEvent(event);
-        Bukkit.getServer().broadcastMessage(event.getMessage());
 
-        danmakuJson.addProperty("showName", ServerConfigs.showSenderNameOnComment);
-        danmakuJson.addProperty("sender",player.getDisplayName());
-        byte[] finalMessage = danmakuJson.toString().getBytes();
-        Bukkit.getOnlinePlayers().forEach(revicer -> {
-            revicer.sendPluginMessage( BilicraftDanmaku.Instance,"bilicraftclientui:bilicraftdanmaku" , finalMessage );
-        });
+        if(!event.getMessage().equals(danmakuContent)){
+            danmakuJson.addProperty("showName", ServerConfigs.showSenderNameOnComment);
+            danmakuJson.addProperty("sender",player.getDisplayName());
+            byte[] finalMessage = danmakuJson.toString().getBytes();
+            Bukkit.getOnlinePlayers().forEach(revicer -> {
+                revicer.sendPluginMessage( BilicraftDanmaku.Instance,"bilicraftclientui:bilicraftdanmaku" , finalMessage );
+            });
+        }
+        //Bukkit.getServer().broadcastMessage(event.getMessage());
     }
 }
