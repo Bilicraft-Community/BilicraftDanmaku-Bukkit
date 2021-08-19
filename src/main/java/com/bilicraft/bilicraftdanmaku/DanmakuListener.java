@@ -12,6 +12,7 @@ import org.bukkit.event.player.PlayerRegisterChannelEvent;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 
 import java.nio.charset.StandardCharsets;
+import java.util.HashSet;
 
 public class DanmakuListener implements Listener, PluginMessageListener {
 
@@ -66,11 +67,11 @@ public class DanmakuListener implements Listener, PluginMessageListener {
             }
         }
 
-        String danmakuContent = danmakuJson.get("").getAsString();
+        String danmakuContent = danmakuJson.get("text").getAsString();
 
-//        AsyncPlayerChatEvent event = new AsyncPlayerChatEvent(player,danmakuContent,);
-//        Bukkit.getServer().getPluginManager().callEvent(event);
-//        Bukkit.getServer().broadcastMessage(event.getMessage());
+        AsyncPlayerChatEvent event = new AsyncPlayerChatEvent(false, player,danmakuContent, new HashSet<>(Bukkit.getOnlinePlayers()));
+        Bukkit.getServer().getPluginManager().callEvent(event);
+        Bukkit.getServer().broadcastMessage(event.getMessage());
 
         danmakuJson.addProperty("showName", ServerConfigs.showSenderNameOnComment);
         danmakuJson.addProperty("sender",player.getDisplayName());
