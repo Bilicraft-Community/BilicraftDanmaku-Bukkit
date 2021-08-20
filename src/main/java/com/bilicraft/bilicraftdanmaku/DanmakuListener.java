@@ -11,6 +11,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerRegisterChannelEvent;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 
+import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 
 public class DanmakuListener implements Listener, PluginMessageListener {
@@ -32,7 +33,10 @@ public class DanmakuListener implements Listener, PluginMessageListener {
             return;
         }
 
-        ServerDanmakuPacket danmakuPacket = Packet.deserialize(message, ServerDanmakuPacket.class);
+        String buffString = new String(message, StandardCharsets.UTF_8);
+        buffString = buffString.substring(buffString.indexOf("{"));
+
+        ServerDanmakuPacket danmakuPacket = Packet.deserialize(buffString, ServerDanmakuPacket.class);
 
         switch (danmakuPacket.getType()) {
             case NORMAL:

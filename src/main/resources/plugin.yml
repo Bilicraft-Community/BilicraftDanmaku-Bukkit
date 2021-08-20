@@ -9,28 +9,24 @@ permissions:
     description: Gives access to all bilicraftdanmaku actions
     default: op
     children:
-      bilicraftdanmaku.denied: false
-      bilicraftdanmaku.mode: true
-  bilicraftdanmaku.mode:
+      bilicraftdanmaku.send: true
+  bilicraftdanmaku.send:
     description: Allowed All mode
     default: op
     children:
-      bilicraftdanmaku.normal: true
-      bilicraftdanmaku.top: true
-      bilicraftdanmaku.bottom: true
-      bilicraftdanmaku.reverse: false
-  bilicraftdanmaku.normal:
+      bilicraftdanmaku.send.normal: true
+      bilicraftdanmaku.send.top: true
+      bilicraftdanmaku.send.bottom: true
+      bilicraftdanmaku.send.reverse: false
+  bilicraftdanmaku.send.normal:
     description: Allowed normal mode
     default: true
-  bilicraftdanmaku.top:
+  bilicraftdanmaku.send.top:
     description: Allowed top mode
     default: op
-  bilicraftdanmaku.bottom:
+  bilicraftdanmaku.send.bottom:
     description: Allowed buttom mode
     default: op
-  bilicraftdanmaku.reverse:
+  bilicraftdanmaku.send.reverse:
     description: Allowed reverse mode
     default: false
-  bilicraftdanmaku.denied:
-    description: Denied this user's danmaku
-    default: not op
