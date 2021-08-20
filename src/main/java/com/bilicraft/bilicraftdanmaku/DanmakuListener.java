@@ -27,7 +27,7 @@ public class DanmakuListener implements Listener, PluginMessageListener {
             return;
         }
 
-        if (player.hasPermission("bilicraftdanmaku.send")) {
+        if (!player.hasPermission("bilicraftdanmaku.send")) {
             player.sendMessage("You are not allowed to send danmaku");
             return;
         }
