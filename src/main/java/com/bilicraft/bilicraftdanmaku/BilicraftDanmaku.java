@@ -10,6 +10,7 @@ public final class BilicraftDanmaku extends JavaPlugin {
     public static final String pluginName = "BilicraftDanmaku";
     public static Logger logger;
     public static BilicraftDanmaku Instance;
+    public static final String channelName = "bilicraftclientui:bilicraftdanmaku";
     @Override
     public void onEnable() {
         // Plugin startup logic
@@ -17,8 +18,8 @@ public final class BilicraftDanmaku extends JavaPlugin {
         BilicraftDanmaku.Instance = this;
         DanmakuListener listener = new DanmakuListener();
         Bukkit.getPluginManager().registerEvents(listener,this);
-        Bukkit.getMessenger().registerIncomingPluginChannel(this, "bilicraftclientui:bilicraftdanmaku" , listener);
-        Bukkit.getMessenger().registerOutgoingPluginChannel(this,"bilicraftclientui:bilicraftdanmaku" );
+        Bukkit.getMessenger().registerIncomingPluginChannel(this, channelName, listener);
+        Bukkit.getMessenger().registerOutgoingPluginChannel(this,channelName);
         logger.info(pluginName + "is loaded, Hello world!");
     }
 

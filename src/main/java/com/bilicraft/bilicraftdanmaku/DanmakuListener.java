@@ -24,6 +24,11 @@ public class DanmakuListener implements Listener, PluginMessageListener {
 
     @Override
     public void onPluginMessageReceived(String channel, Player player, byte[] message) {
+
+        if(!channel.equals(BilicraftDanmaku.channelName)){
+            return;
+        }
+
         if(player.hasPermission("bilicraftdanmaku.denied")){
             player.sendMessage("You are not allowed to send danmaku");
             return;
@@ -76,7 +81,7 @@ public class DanmakuListener implements Listener, PluginMessageListener {
         AsyncPlayerChatEvent event = new AsyncPlayerChatEvent(false, player,danmakuContent, new HashSet<>(Bukkit.getOnlinePlayers()));
         Bukkit.getServer().getPluginManager().callEvent(event);
 
-        if(!(event.isCancelled()) && (!event.getMessage().equals(danmakuContent))){
+        if(!(event.isCancelled()) && event.getMessage().equals(danmakuContent)){
             bukkitMessageObject.addProperty("showName", ServerConfigs.showSenderNameOnComment);
             bukkitMessageObject.addProperty("sender",player.getDisplayName());
             byte[] finalMessage = bukkitMessageObject.toString().getBytes();
