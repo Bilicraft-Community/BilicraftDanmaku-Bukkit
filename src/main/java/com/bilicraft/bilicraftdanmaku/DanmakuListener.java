@@ -84,9 +84,9 @@ public class DanmakuListener implements Listener, PluginMessageListener {
         if(!(event.isCancelled()) && event.getMessage().equals(danmakuContent)){
             bukkitMessageObject.addProperty("showName", ServerConfigs.showSenderNameOnComment);
             bukkitMessageObject.addProperty("sender",player.getDisplayName());
-            byte[] finalMessage = bukkitMessageObject.toString().getBytes();
+            byte[] finalMessage = bukkitMessageObject.toString().getBytes(StandardCharsets.UTF_8);
             Bukkit.getOnlinePlayers().forEach(revicer -> {
-                revicer.sendPluginMessage( BilicraftDanmaku.Instance,"bilicraftclientui:bilicraftdanmaku" , finalMessage );
+                revicer.sendPluginMessage( BilicraftDanmaku.Instance,"bilicraftclientui:bilicraftdanmaku" , finalMessage);
             });
         }
 
