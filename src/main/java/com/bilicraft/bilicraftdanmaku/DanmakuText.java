@@ -49,11 +49,11 @@ public class DanmakuText {
     }
 
     public void setCode(List<String> formattings) {
-        String codes = "";
+        StringBuilder codes = new StringBuilder();
         for (String f:formattings) {
-            codes += f;
+            codes.append(f);
         }
-        this.code = codes;
+        this.code = codes.toString();
     }
 
     public List<DanmakuText> getSubText() {
