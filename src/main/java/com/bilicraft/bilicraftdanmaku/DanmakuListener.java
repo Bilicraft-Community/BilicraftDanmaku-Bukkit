@@ -79,9 +79,7 @@ public class DanmakuListener implements Listener, PluginMessageListener {
                     .jsonText(danmakuPacket.getJsonText())
                     .lifespan(danmakuPacket.getLifespan())
                     .build().serializeBytes();
-            Bukkit.getOnlinePlayers().forEach(revicer -> {
-                revicer.sendPluginMessage(BilicraftDanmaku.Instance, "bilicraftclientui:bilicraftdanmaku", sendingDanmakuBytes);
-            });
+            Bukkit.getOnlinePlayers().forEach(revicer -> revicer.sendPluginMessage(BilicraftDanmaku.Instance, "bilicraftclientui:bilicraftdanmaku", sendingDanmakuBytes));
         }
 
     }

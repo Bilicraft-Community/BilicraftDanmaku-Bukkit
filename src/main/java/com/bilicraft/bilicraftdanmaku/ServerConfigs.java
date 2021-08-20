@@ -1,5 +1,6 @@
 package com.bilicraft.bilicraftdanmaku;
 
+import com.bilicraft.bilicraftdanmaku.protocol.CommonDanmakuType;
 import com.google.common.collect.Sets;
 
 import java.io.File;
@@ -8,7 +9,7 @@ import java.util.Set;
 public class ServerConfigs {
     // private static Configuration config;
 
-    public static String allowedMode = "0;1;2;3";
+    public static String allowedMode = "NORMAL;TOP;BOTTOM;RESERVE";
     public static int minLifespan = 10;
     public static int maxLifespan = 100;
     public static int commentInterval = 100;
@@ -17,25 +18,11 @@ public class ServerConfigs {
     public static boolean allowLANServer = false;
     public static boolean showSenderNameOnComment = true;
 
-    private static Set<Integer> sModes = Sets.newHashSet();
+    private static final Set<CommonDanmakuType> sModes = Sets.newHashSet();
     private static int hModes = 0;
 
-    public static boolean isModeAllowed(int mode){
-        if (hModes != allowedMode.hashCode()){
-            sModes.clear();
-            for (String s : allowedMode.split(";"))
-            {
-                try
-                {
-                    sModes.add(Integer.parseInt(s));
-                }
-                catch (NumberFormatException ignored)
-                {
-                }
-            }
-            hModes = allowedMode.hashCode();
-        }
-        return sModes.contains(mode);
+    public static boolean isModeAllowed(String mode){
+       return true;
     }
 
     public static void load(File configFile){
