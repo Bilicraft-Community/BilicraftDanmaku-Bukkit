@@ -18,7 +18,7 @@ public class DanmakuListener implements Listener, PluginMessageListener {
 
     @EventHandler
     public void channelHandler(PlayerRegisterChannelEvent event) {
-        BilicraftDanmaku.logger.info(event.getChannel());
+       // BilicraftDanmaku.logger.info(event.getChannel());
     }
 
     @Override
@@ -35,9 +35,7 @@ public class DanmakuListener implements Listener, PluginMessageListener {
 
         String buffString = new String(message, StandardCharsets.UTF_8);
         buffString = buffString.substring(buffString.indexOf("{"));
-
         ServerDanmakuPacket danmakuPacket = Packet.deserialize(buffString, ServerDanmakuPacket.class);
-
         switch (danmakuPacket.getType()) {
             case NORMAL:
                 if (!player.hasPermission("bilicraftdanmaku.send.normal")) {
