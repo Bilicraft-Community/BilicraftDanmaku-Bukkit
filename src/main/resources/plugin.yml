@@ -17,7 +17,7 @@ permissions:
     children:
       bilicraftdanmaku.normal: true
       bilicraftdanmaku.top: true
-      bilicraftdanmaku.buttom: true
+      bilicraftdanmaku.bottom: true
       bilicraftdanmaku.reverse: false
   bilicraftdanmaku.normal:
     description: Allowed normal mode
@@ -25,7 +25,7 @@ permissions:
   bilicraftdanmaku.top:
     description: Allowed top mode
     default: op
-  bilicraftdanmaku.buttom:
+  bilicraftdanmaku.bottom:
     description: Allowed buttom mode
     default: op
   bilicraftdanmaku.reverse:
