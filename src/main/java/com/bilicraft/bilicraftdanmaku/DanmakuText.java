@@ -2,6 +2,7 @@ package com.bilicraft.bilicraftdanmaku;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,15 +71,26 @@ public class DanmakuText {
     public void append(String text){
         this.append(new DanmakuText(text,"",new ArrayList<>()));
     }
-
-    public static String getCheckableText(JsonObject object){
-        String result = new String(object.get("string").getAsString());
+    public static String getCheckableText(String textJson){
+        JsonObject object = new JsonParser().parse(textJson).getAsJsonObject();
+        StringBuilder result = new StringBuilder(object.get("string").getAsString());
 
         for (JsonElement sub:object.get("subText").getAsJsonArray()) {
-            result += getCheckableText(sub.getAsJsonObject());
+            result.append(getCheckableText(sub.getAsJsonObject()));
         }
 
-        return result;
+        return result.toString();
+    }
+
+    @Deprecated
+    public static String getCheckableText(JsonObject object){
+        StringBuilder result = new StringBuilder(object.get("string").getAsString());
+
+        for (JsonElement sub:object.get("subText").getAsJsonArray()) {
+            result.append(getCheckableText(sub.getAsJsonObject()));
+        }
+
+        return result.toString();
     }
 
 }
