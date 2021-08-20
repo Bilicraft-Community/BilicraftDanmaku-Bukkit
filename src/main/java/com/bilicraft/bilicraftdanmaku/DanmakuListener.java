@@ -66,21 +66,23 @@ public class DanmakuListener implements Listener, PluginMessageListener {
 
         String danmakuContent = DanmakuText.getCheckableText(danmakuPacket.getJsonText());
 
-        AsyncPlayerChatEvent event = new AsyncPlayerChatEvent(false, player, danmakuContent, new HashSet<>(Bukkit.getOnlinePlayers()));
-        Bukkit.getServer().getPluginManager().callEvent(event);
+        Bukkit.getScheduler().runTaskAsynchronously(BilicraftDanmaku.Instance, () -> {
+            AsyncPlayerChatEvent event = new AsyncPlayerChatEvent(true, player, danmakuContent, new HashSet<>(Bukkit.getOnlinePlayers()));
+            Bukkit.getServer().getPluginManager().callEvent(event);
+            if (!(event.isCancelled())) {
+                byte[] sendingDanmakuBytes = ClientDanmakuPacket
+                        .builder()
+                        .type(danmakuPacket.getType())
+                        .sender(player.getUniqueId())
+                        .senderDisplayName(player.getDisplayName())
+                        .showName(ServerConfigs.showSenderNameOnComment)
+                        .jsonText(danmakuPacket.getJsonText())
+                        .lifespan(danmakuPacket.getLifespan())
+                        .build().serializeBytes();
+                Bukkit.getOnlinePlayers().forEach(revicer -> revicer.sendPluginMessage(BilicraftDanmaku.Instance, "bilicraftclientui:bilicraftdanmaku", sendingDanmakuBytes));
+            }
+        });
 
-        if (!(event.isCancelled())) {
-            byte[] sendingDanmakuBytes = ClientDanmakuPacket
-                    .builder()
-                    .type(danmakuPacket.getType())
-                    .sender(player.getUniqueId())
-                    .senderDisplayName(player.getDisplayName())
-                    .showName(ServerConfigs.showSenderNameOnComment)
-                    .jsonText(danmakuPacket.getJsonText())
-                    .lifespan(danmakuPacket.getLifespan())
-                    .build().serializeBytes();
-            Bukkit.getOnlinePlayers().forEach(revicer -> revicer.sendPluginMessage(BilicraftDanmaku.Instance, "bilicraftclientui:bilicraftdanmaku", sendingDanmakuBytes));
-        }
 
     }
 }

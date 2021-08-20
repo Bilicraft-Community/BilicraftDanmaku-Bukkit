@@ -85,7 +85,7 @@ public class DanmakuText {
     @Deprecated
     public static String getCheckableText(JsonObject object){
         StringBuilder result = new StringBuilder(object.get("string").getAsString());
-
+        
         for (JsonElement sub:object.get("subText").getAsJsonArray()) {
             result.append(getCheckableText(sub.getAsJsonObject()));
         }
