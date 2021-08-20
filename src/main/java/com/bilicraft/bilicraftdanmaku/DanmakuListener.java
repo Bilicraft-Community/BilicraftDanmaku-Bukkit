@@ -74,7 +74,7 @@ public class DanmakuListener implements Listener, PluginMessageListener {
                         .builder()
                         .type(danmakuPacket.getType())
                         .sender(player.getUniqueId())
-                        .senderDisplayName(player.getDisplayName())
+                        .playerName(player.getDisplayName())
                         .showName(ServerConfigs.showSenderNameOnComment)
                         .jsonText(danmakuPacket.getJsonText())
                         .lifespan(danmakuPacket.getLifespan())
