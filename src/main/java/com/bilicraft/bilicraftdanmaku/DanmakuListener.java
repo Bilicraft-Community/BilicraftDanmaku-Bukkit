@@ -32,59 +32,62 @@ public class DanmakuListener implements Listener, PluginMessageListener {
             player.sendMessage("You are not allowed to send danmaku");
             return;
         }
-
         String buffString = new String(message, StandardCharsets.UTF_8);
         buffString = buffString.substring(buffString.indexOf("{"));
-        ServerDanmakuPacket danmakuPacket = Packet.deserialize(buffString, ServerDanmakuPacket.class);
-        switch (danmakuPacket.getType()) {
-            case NORMAL:
-                if (!player.hasPermission("bilicraftdanmaku.send.normal")) {
-                    player.sendMessage("You are not allowed to send a normal danmaku");
+        try {
+            ServerDanmakuPacket danmakuPacket = Packet.deserialize(buffString, ServerDanmakuPacket.class);
+            BilicraftDanmaku.logger.info("收到弹幕: "+player.getDisplayName()+" -> "+danmakuPacket.getJsonText());
+            switch (danmakuPacket.getType()) {
+                case NORMAL:
+                    if (!player.hasPermission("bilicraftdanmaku.send.normal")) {
+                        player.sendMessage("You are not allowed to send a normal danmaku");
+                        return;
+                    }
+                    break;
+                case TOP:
+                    if (!player.hasPermission("bilicraftdanmaku.send.top")) {
+                        player.sendMessage("You are not allowed to send danmaku at top");
+                        return;
+                    }
+                    break;
+                case BOTTOM:
+                    if (!player.hasPermission("bilicraftdanmaku.send.bottom")) {
+                        player.sendMessage("You are not allowed to send danmaku at bottom ");
+                        return;
+                    }
+                    break;
+                case RESERVE:
+                    if (!player.hasPermission("bilicraftdanmaku.send.reverse")) {
+                        player.sendMessage("You are not allowed to send reverse danmaku");
+                        return;
+                    }
+                    break;
+                default:
+                    player.sendMessage("No such danmaku mode");
                     return;
-                }
-                break;
-            case TOP:
-                if (!player.hasPermission("bilicraftdanmaku.send.top")) {
-                    player.sendMessage("You are not allowed to send danmaku at top");
-                    return;
-                }
-                break;
-            case BOTTOM:
-                if (!player.hasPermission("bilicraftdanmaku.send.bottom")) {
-                    player.sendMessage("You are not allowed to send danmaku at bottom ");
-                    return;
-                }
-                break;
-            case RESERVE:
-                if (!player.hasPermission("bilicraftdanmaku.send.reverse")) {
-                    player.sendMessage("You are not allowed to send reverse danmaku");
-                    return;
-                }
-                break;
-            default:
-                player.sendMessage("No such danmaku mode");
-                return;
-        }
-
-        String danmakuContent = DanmakuText.getCheckableText(danmakuPacket.getJsonText());
-
-        Bukkit.getScheduler().runTaskAsynchronously(BilicraftDanmaku.Instance, () -> {
-            AsyncPlayerChatEvent event = new AsyncPlayerChatEvent(true, player, danmakuContent, new HashSet<>(Bukkit.getOnlinePlayers()));
-            Bukkit.getServer().getPluginManager().callEvent(event);
-            if (!(event.isCancelled())) {
-                byte[] sendingDanmakuBytes = ClientDanmakuPacket
-                        .builder()
-                        .type(danmakuPacket.getType())
-                        .sender(player.getUniqueId())
-                        .playerName(player.getDisplayName())
-                        .showName(ServerConfigs.showSenderNameOnComment)
-                        .jsonText(danmakuPacket.getJsonText())
-                        .lifespan(danmakuPacket.getLifespan())
-                        .build().serializeBytes();
-                Bukkit.getOnlinePlayers().forEach(revicer -> revicer.sendPluginMessage(BilicraftDanmaku.Instance, "bilicraftclientui:bilicraftdanmaku", sendingDanmakuBytes));
             }
-        });
 
+            String danmakuContent = DanmakuText.getCheckableText(danmakuPacket.getJsonText());
 
+            Bukkit.getScheduler().runTaskAsynchronously(BilicraftDanmaku.Instance, () -> {
+                AsyncPlayerChatEvent event = new AsyncPlayerChatEvent(true, player, danmakuContent, new HashSet<>(Bukkit.getOnlinePlayers()));
+                Bukkit.getServer().getPluginManager().callEvent(event);
+                if (!(event.isCancelled())) {
+                    byte[] sendingDanmakuBytes = ClientDanmakuPacket
+                            .builder()
+                            .type(danmakuPacket.getType())
+                            .sender(player.getUniqueId())
+                            .playerName(player.getDisplayName())
+                            .showName(ServerConfigs.showSenderNameOnComment)
+                            .jsonText(danmakuPacket.getJsonText())
+                            .lifespan(danmakuPacket.getLifespan())
+                            .build().serializeBytes();
+                    Bukkit.getOnlinePlayers().forEach(revicer -> revicer.sendPluginMessage(BilicraftDanmaku.Instance, "bilicraftclientui:bilicraftdanmaku", sendingDanmakuBytes));
+                }
+            });
+
+        }catch (Exception exception){
+            BilicraftDanmaku.logger.warning("无效数据包: "+buffString);
+        }
     }
 }
