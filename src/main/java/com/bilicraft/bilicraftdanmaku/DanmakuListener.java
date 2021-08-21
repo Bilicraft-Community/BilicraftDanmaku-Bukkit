@@ -19,6 +19,9 @@ public class DanmakuListener implements Listener, PluginMessageListener {
     @EventHandler
     public void channelHandler(PlayerRegisterChannelEvent event) {
        // BilicraftDanmaku.logger.info(event.getChannel());
+        if(event.getChannel().equals(BilicraftDanmaku.channelName)){
+            BilicraftDanmaku.logger.info("玩家 "+event.getPlayer().getName()+" 的弹幕消息通道连接已建立");
+        }
     }
 
     @Override
@@ -73,6 +76,7 @@ public class DanmakuListener implements Listener, PluginMessageListener {
                 AsyncPlayerChatEvent event = new AsyncPlayerChatEvent(true, player, danmakuContent, new HashSet<>(Bukkit.getOnlinePlayers()));
                 Bukkit.getServer().getPluginManager().callEvent(event);
                 if(!event.getMessage().equals(danmakuContent)){
+                    player.sendMessage("您的弹幕内容已被第三方插件更改，请检查并再试一次");
                     return;
                 }
                 if (!(event.isCancelled())) {
