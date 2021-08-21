@@ -72,6 +72,9 @@ public class DanmakuListener implements Listener, PluginMessageListener {
             Bukkit.getScheduler().runTaskAsynchronously(BilicraftDanmaku.Instance, () -> {
                 AsyncPlayerChatEvent event = new AsyncPlayerChatEvent(true, player, danmakuContent, new HashSet<>(Bukkit.getOnlinePlayers()));
                 Bukkit.getServer().getPluginManager().callEvent(event);
+                if(!event.getMessage().equals(danmakuContent)){
+                    return;
+                }
                 if (!(event.isCancelled())) {
                     byte[] sendingDanmakuBytes = ClientDanmakuPacket
                             .builder()
