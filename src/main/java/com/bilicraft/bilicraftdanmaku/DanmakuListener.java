@@ -20,7 +20,7 @@ public class DanmakuListener implements Listener, PluginMessageListener {
     public void channelHandler(PlayerRegisterChannelEvent event) {
        // BilicraftDanmaku.logger.info(event.getChannel());
         if(event.getChannel().equals(BilicraftDanmaku.channelName)){
-            BilicraftDanmaku.logger.info("玩家 "+event.getPlayer().getName()+" 的弹幕消息通道连接已建立");
+            BilicraftDanmaku.logger.info("玩家 "+event.getPlayer().getName()+" 的弹幕消息通道已建立");
         }
     }
 
@@ -38,6 +38,10 @@ public class DanmakuListener implements Listener, PluginMessageListener {
         String buffString = new String(message, StandardCharsets.UTF_8);
         buffString = buffString.substring(buffString.indexOf("{"));
         try {
+            if(!Util.isJson(buffString)){
+                BilicraftDanmaku.logger.warning("玩家 "+player.getName()+" 发送了无效弹幕请求: "+buffString);
+                return;
+            }
             ServerDanmakuPacket danmakuPacket = Packet.deserialize(buffString, ServerDanmakuPacket.class);
             BilicraftDanmaku.logger.info("收到弹幕: "+player.getDisplayName()+" -> "+danmakuPacket.getJsonText());
             switch (danmakuPacket.getType()) {
